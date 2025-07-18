@@ -1,0 +1,197 @@
+/* 🌈 Dégradé de fond doux */
+body {
+   background-color: #3409f5; /* Fond très clair et propre */
+   margin: 0;
+   padding: 0;
+   font-family: 'Segoe UI', sans-serif;
+}
+
+/* 🧭 En-tête */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: rgb(1, 9, 10);
+  padding: 20px 30px;
+  border-bottom: 4px solid #1abc9c;
+  font-size: 22px;
+}
+
+/* 📦 Conteneur des sections */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* 🛍️ Produits */
+.produit {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 20px;
+  width: 250px;
+  margin: 15px;
+  display: inline-block;
+  vertical-align: top;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.produit {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  width: 180px;
+  text-align: center;
+  display: inline-block;
+  background: rgb(17, 4, 4);
+  box-shadow: 2px 2px 8px rgba(84, 54, 192, 0.1);
+  border-radius: 10px;
+}
+
+.image-produit {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.produit:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.produit h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.produit p {
+  font-size: 16px;
+  margin: 0;
+  color: #444;
+}
+
+.produit button {
+  margin-top: 15px;
+  background: #1abc9c;
+  border: none;
+  color: rgb(99, 103, 104);
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.produit button:hover {
+  background: #16a085;
+}
+
+/* 🛒 Panier et Livraison */
+#panier, #livraison {
+  background: #ffffffee;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  padding: 25px;
+  margin-top: 40px;
+}
+
+#panier h2, #livraison h2 {
+  border-bottom: 2px solid #1abc9c;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+ul#listePanier {
+  padding-left: 20px;
+}
+
+ul#listePanier li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+button.btn-panier {
+  background: #3498db;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+button.btn-panier:hover {
+  background: #2980b9;
+}
+
+/* 💼 Formulaire */
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+button[type="submit"], #livraison button {
+  background: #1abc9c;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover, #livraison button:hover {
+  background: #16a085;
+}
+
+/* ✅ Message de confirmation */
+#confirmationMessage {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .produit {
+    width: 100%;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 18px;
+  }
+}
+/* Amélioration de la lisibilité en mode sombre */
+body.dark-mode {
+  line-height: 1.6;
+}
+
+body.dark-mode #aproposdemoi,
+body.dark-mode #mescompetences {
+  background: rgba(30, 30, 30, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+/* Animation douce pour les transitions */
+body.dark-mode section {
+  transition: background 0.3s ease;
+}
+
+body.dark-mode section:hover {
+  background: rgba(40, 40, 40, 0.6);
+}
+/* Mode sombre par défaut */
+
+/* Active le mode sombre par défaut */
+
+ :root {
+  --mouse-x: 0.5;
+  --mouse-y: 0.5;
+  --color-accent: #08f;
+}

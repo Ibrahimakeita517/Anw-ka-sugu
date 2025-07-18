@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Anw Ka Sugu</title>
+  <style>
+    body {
+    background-color: rgba(5, 21, 236, 0.6); /* Bleu clair moderne et apaisant */
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+   }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      padding: 20px 30px;
+      border-bottom: 4px solid #1abc9c;
+      font-size: 22px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    .produit {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 250px;
+      margin: 15px;
+      display: inline-block;
+      vertical-align: top;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .produit:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .produit h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .produit p {
+      font-size: 16px;
+      margin: 0;
+      color: #444;
+    }
+
+    .produit button {
+      margin-top: 15px;
+      background: #1abc9c;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .produit button:hover {
+      background: #16a085;
+    }
+
+    #panier, #livraison {
+      background: #ffffffee;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      padding: 25px;
+      margin-top: 40px;
+    }
+
+    #panier h2, #livraison h2 {
+      border-bottom: 2px solid #1abc9c;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    ul#listePanier {
+      padding-left: 20px;
+    }
+
+    ul#listePanier li {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .quantite {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    button.btn-panier {
+      background: #3498db;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+
+    button.btn-panier:hover {
+      background: #2980b9;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button[type="submit"], #livraison button {
+      background: #1abc9c;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover, #livraison button:hover {
+      background: #16a085;
+    }
+
+    #confirmationMessage {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #2ecc71;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .produit {
+        width: 100%;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Anw Ka Sugu</h1>
+      <span> Anw Ka sugu-Ensemble vers un meilleur marché. </span>
+    </header>
+
+    <!-- 🔍 Barre de recherche -->
+    <input type="text" id="searchInput" placeholder="Rechercher un produit..." onkeyup="rechercherProduit()"
+      style="width: 100%; padding: 12px 20px; margin: 20px 0; font-size: 18px; border: 2px solid #1abc9c; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); outline: none;">
+
+    <div id="listeProduits"></div>
+    
+
+
+    <div id="panier">
+      <h2>Panier</h2>
+      <ul id="listePanier"></ul>
+      <p><strong>Total : </strong><span id="total">0</span> FCFA</p>
+    </div>
+
+    <div id="livraison">
+      <h2>Informations de Livraison</h2>
+      <label>Quartier: <input type="text" id="quartier"></label>
+      <label>Rue: <input type="text" id="rue"></label>
+      <label>Porte: <input type="text" id="porte"></label>
+      <label>Téléphone: <input type="text" id="telephone"></label>
+
+      <h2>Mode de paiement</h2>
+      <select id="paiement">
+        <option value="">-- Choisir --</option>
+        <option value="orange">Orange Money</option>
+        <option value="wave">Wave</option>
+        <option value="sama">Sama Money</option>
+      </select>
+
+      <button onclick="validerCommande()">Valider la commande</button>
+    </div>
+
+    <div id="confirmationMessage"></div>
+  </div>
+
+  <script>
+    const produits = [
+      { nom: "Riz", prix: 2500, image: "img/riz.jpg" },
+      { nom: "Sucre", prix: 750 , image: "img/sucre.jpg" },
+      { nom: "Huile végétale", prix: 1500, image: "img/huile.jpg" },
+      { nom: "Thé vert", prix: 500, image: "img/the.jpg" },
+      { nom: "Lait en poudre", prix: 4000, image: "img/lait.jpg" },
+      { nom: "Pâte alimentaire", prix: 2000, image: "img/pate.jpg" },
+      { nom: "Tomate concentrée", prix: 500, image: "img/tomate.jpg" },
+      { nom: "Farine de mil", prix: 500, image: "img/farine-mil.jpg" },
+      { nom: "Farine de maïs", prix: 400, image: "img/farine-mais.jpg" },
+      { nom: "Sel iodé", prix: 200, image: "img/sel.jpg" },
+      { nom: "Poivre noir", prix: 200, image: "img/poivre.jpg" },
+      { nom: "Piment sec", prix: 100, image: "img/piment.jpg" },
+      { nom: "Oignon", prix: 300, image: "img/oignon.jpg" },
+      { nom: "Ail", prix: 300, image: "img/ail.jpg" },
+      { nom: "Pain", prix: 300, image: "img/pain.jpg" },
+      { nom: "Sardine en boîte", prix: 300, image: "img/sardine.jpg" },
+      { nom: "Spaghetti", prix: 800, image: "img/spaghetti.jpg" },
+      { nom: "Petit pois", prix: 1200, image: "img/petit-pois.jpg" },
+      { nom: "Pois chiche", prix: 900, image: "img/pois-chiche.jpg" },
+      { nom: "Haricot sec", prix: 800, image: "img/haricot.jpg" },
+      { nom: "Viande de bœuf", prix: 3500,image: "img/viande.jpg" },
+      { nom: "Poulet local", prix: 4000, image: "img/poulet.jpg" },
+      { nom: "Poisson sec", prix: 2000, image: "img/poisson-sec.jpg" },
+      { nom: "Poisson fumé", prix: 2500, image: "img/poisson-fume.jpg" },
+      { nom: "Œufs", prix: 1500, image: "img/oeufs.jpg" },
+      { nom: "Yaourt local", prix: 500, image: "img/yaourt.jpg" },
+      { nom: "Jus de bissap", prix: 300, image: "img/bissap.jpg" },
+      { nom: "Jus de gingembre", prix: 300, image: "img/gingembre.jpg" },
+      { nom: "Pain sucré", prix: 400, image: "img/pain-sucre.jpg" },
+      { nom: "Soumbala", prix: 100, image: "img/soumbala.jpg" },
+      { nom: "Beurre de karité alimentaire", prix: 600, image: "img/karite.jpg" },
+      { nom: "Néré", prix: 100, image: "img/nere.jpg" },
+      { nom: "Couscous de mil", prix: 1200, image: "img/couscous.jpg" },
+      { nom: "Frites de patate", prix: 800, image: "img/patate.jpg" },
+      { nom: "Banane plantain", prix: 900, image: "img/banane.jpg" },
+      { nom: "Miel pur", prix: 3000, image: "img/miel.jpg" },
+      { nom: "Lait caillé", prix: 400, image: "img/lait-caille.jpg" }
+    ];
+    
+    
+
+    const panier = {};
+
+    function afficherProduits() {
+      const div = document.getElementById("listeProduits");
+      div.innerHTML = "";
+      produits.forEach((produit, index) => {
+        const p = document.createElement("div");
+        p.className = "produit";
+        p.setAttribute("data-nom", produit.nom.toLowerCase());
+        p.innerHTML = `
+          <img src="${produit.image}" alt="${produit.nom}" style="width:100%;height:150px;object-fit:cover;border-radius:12px 12px 0 0;">
+          <h3>${produit.nom}</h3>
+          <p>${produit.prix} FCFA</p>
+          <button onclick="ajouterAuPanier(${index})">Ajouter</button>
+        `;
+        div.appendChild(p);
+      });
+    }
+
+    function rechercherProduit() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const produitsAffiches = document.querySelectorAll('.produit');
+      produitsAffiches.forEach(p => {
+        const nom = p.getAttribute('data-nom');
+        if (nom.includes(input)) {
+          p.style.display = 'inline-block';
+        } else {
+          p.style.display = 'none';
+        }
+      });
+    }
+
+    function ajouterAuPanier(index) {
+      const nom = produits[index].nom;
+      if (panier[nom]) {
+        panier[nom].quantite += 1;
+      } else {
+        panier[nom] = { ...produits[index], quantite: 1 };
+      }
+      afficherPanier();
+    }
+
+    function modifierQuantite(nom, delta) {
+      if (panier[nom]) {
+        panier[nom].quantite += delta;
+        if (panier[nom].quantite <= 0) delete panier[nom];
+        afficherPanier();
+      }
+    }
+
+    function afficherPanier() {
+      const ul = document.getElementById("listePanier");
+      ul.innerHTML = "";
+      let total = 0;
+
+      for (let nom in panier) {
+        const item = panier[nom];
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${nom} - ${item.prix} FCFA x 
+          <span class="quantite">${item.quantite}</span> = ${item.prix * item.quantite} FCFA
+          <button class="btn-panier" onclick="modifierQuantite('${nom}', -1)">➖</button>
+          <button class="btn-panier" onclick="modifierQuantite('${nom}', 1)">➕</button>
+        `;
+        ul.appendChild(li);
+        total += item.prix * item.quantite;
+      }
+
+      document.getElementById("total").textContent = total;
+    }
+
+    let codeEnvoye = "";
+
+    function validerCommande() {
+      const quartier = document.getElementById("quartier").value.trim();
+      const rue = document.getElementById("rue").value.trim();
+      const porte = document.getElementById("porte").value.trim();
+      const telephone = document.getElementById("telephone").value.trim();
+      const paiement = document.getElementById("paiement").value;
+
+      if (!quartier || !rue || !porte || !telephone || !paiement) {
+        alert("Veuillez remplir tous les champs.");
+        return;
+      }
+      
+      codeEnvoye = Math.floor(1000 + Math.random() * 9000).toString();
+      alert("Code de confirmation envoyé (simulé) : " + codeEnvoye);
+
+      const code = prompt("Entrez le code de confirmation que vous avez reçu :");
+
+      if (code === codeEnvoye) {
+        document.getElementById("confirmationMessage").textContent = "✅ Commande confirmée ! Livraison en cours...";
+      } else {
+        alert("❌ Code incorrect.");
+      }
+    }
+
+    afficherProduits();
+  </script>
+  <P>Bienvenue sur anw ka sugu
+Anw Ka Sugu est une application web de vente en ligne qui permet aux utilisateurs de consulter une liste de produits, d'effectuer des recherches rapides, puis de passer commande facilement.
+L'application affiche une plus de 200 à 300  produits avec leur nom, image et prix Elle intègre une barre de recherche permettant de filtrer les produits en temps réel. Lorsqu'un utilisateur souhaite commander, il remplit un formulaire de livraison contenant son quartier, sa rue, sa porte et son numéro de téléphone. Ensuite, il choisit un moyen de paiement parmi Orange Money, Wave ou Sama Money. Pour finaliser la commande, un code de confirmation à 4 chiffres est simulé puis demandé à l'utilisateur. Si le code est correct, un message de livraison s'affiche: sinon, un message d'erreur est montré. Le projet est entièrement réalisé en HTML, CSS et JavaScript, avec une interface simple et intuitive. Il vise à digitaliser le commerce local et à faciliter l'accès aux produits dans les quartiers de manière rapide et sécurisée </p>
+<h4>créateur: Ibrahima keita </h4>
+<p>“Je suis Ibrahima Keita, jeune développeur autodidacte. Avec cette application, je veux moderniser notre façon d’acheter à Bamako.”</p>
+</body>
+</html>
